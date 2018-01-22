@@ -2,19 +2,19 @@
 namespace Wangjian\Ranking\Ranking;
 
 use Wangjian\Ranking\Provider\AbstractProvider;
-use Wangjian\Ranking\RedisAdapter\AbstractRedisAdapter;
+use Predis\Client;
 
 abstract class AbstractRanking
 {
-    protected $redisAdapter;
+    protected $client;
 
     protected $provider;
 
     protected $prefix;
 
-    public function __construct(AbstractRedisAdapter $redisAdapter, AbstractProvider $provider, $prefix)
+    public function __construct(Client $client, AbstractProvider $provider, $prefix)
     {
-        $this->redisAdapter = $redisAdapter;
+        $this->client = $client;
         $this->provider = $provider;
         $this->prefix = $prefix;
 
@@ -23,18 +23,26 @@ abstract class AbstractRanking
 
     public function rank($member, $withScores = false)
     {
+        $result = [];
 
+        $rank = $this->client->zrevrank($this->getRankKey(), $member);
+        $result['rank'] = $rank === null ? $rank : $rank + 1;
+
+        if($withScores) {
+            $result['score'] = $this->client->zscore($this->getRankKey(), $member);
+        }
+
+        return $result;
     }
 
     public function top($offset, $limit, $withScores = false)
     {
-
     }
 
     public function addItem($member, $score)
     {
         if($this->isRealTime()) {
-            $this->redisAdapter->zincrby($this->getRankKey(), $score, $member);
+            $this->client->zincrby($this->getRankKey(), $score, $member);
         }
     }
 
@@ -52,21 +60,21 @@ abstract class AbstractRanking
     {
         if($this->needRefresh()) {
             $tmpInitKey = $this->getInitKey() . '_temp';
-            $tmpRankKey = $this->getInitKey() . '_temp';
+            $tmpRankKey = $this->getRankKey() . '_temp';
 
-            if($this->redisAdapter->setnx($tmpInitKey, time())) {
+            if($this->client->setnx($tmpInitKey, time())) {
                 foreach($this->provider->provide() as $item) {
-                    $this->redisAdapter->zincrby($tmpRankKey, $item['score'], $item['member']);
+                    $this->client->zincrby($tmpRankKey, $item['score'], $item['member']);
                 }
             }
 
-            $this->redisAdapter->rename($tmpInitKey, $this->getInitKey());
-            $this->redisAdapter->rename($tmpRankKey, $this->getRankKey());
+            $this->client->rename($tmpInitKey, $this->getInitKey());
+            $this->client->rename($tmpRankKey, $this->getRankKey());
         }
     }
 
     protected function getInitTime() {
-        return (int)$this->redisAdapter->get($this->getInitKey());
+        return (int)$this->client->get($this->getInitKey());
     }
 
     abstract protected function getRankingName();

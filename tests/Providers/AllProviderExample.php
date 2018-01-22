@@ -8,9 +8,9 @@ class AllProviderExample extends AllProvider
     public function getAll()
     {
         return [
-            ['score' => 80, 'zhangsan'],
-            ['score' => 72, 'lisi'],
-            ['score' => 65, 'wangwu'],
+            ['score' => 80, 'member' => 'zhangsan'],
+            ['score' => 72, 'member' => 'lisi'],
+            ['score' => 65, 'member' => 'wangwu'],
         ];
     }
 }

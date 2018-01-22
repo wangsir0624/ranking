@@ -10,9 +10,9 @@ class AllProviderTest extends TestCase
 {
     public function testProvide() {
         $expected = [
-            ['score' => 80, 'zhangsan'],
-            ['score' => 72, 'lisi'],
-            ['score' => 65, 'wangwu']
+            ['score' => 80, 'member' => 'zhangsan'],
+            ['score' => 72, 'member' => 'lisi'],
+            ['score' => 65, 'member' => 'wangwu']
         ];
 
         $providers = [
