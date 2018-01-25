@@ -96,11 +96,13 @@ trait TimeUtil
         $timestamp = is_null($timestamp) ? time() : $timestamp;
 
         $dateinfo = getdate($timestamp);
+        $year = $dateinfo['year'];
         $nextMonth = $dateinfo['mon'] + 1;
         if($nextMonth > 12) {
             $nextMonth -= 12;
+            $year += 1;
         }
 
-        return strtotime(date("Y-$nextMonth-01 00:00:00")) - 1;
+        return strtotime(date("$year-$nextMonth-01 00:00:00")) - 1;
     }
 }

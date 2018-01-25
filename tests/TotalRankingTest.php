@@ -1,30 +1,11 @@
 <?php
 namespace Wangjian\Ranking\Test;
 
-use PHPUnit\Framework\TestCase;
-use Predis\Client;
 use Wangjian\Ranking\Ranking\TotalRanking;
 use Wangjian\Ranking\Test\Providers\AllProviderExample;
 
-class TotalRankingTest extends TestCase
+class TotalRankingTest extends RankingTestBase
 {
-    protected $client;
-
-    public function __construct($name = null, array $data = array(), $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-
-        $client = new Client([
-            'schema' => 'tcp',
-            'host' => '127.0.0.1',
-            'port' => 6380,
-            'password' => 'ranking',
-            'database' => 0
-        ]);
-
-        $this->client = $client;
-    }
-
     public function testRank()
     {
         $totalRanking = new TotalRanking($this->client, new AllProviderExample(), 'test');
@@ -47,6 +28,13 @@ class TotalRankingTest extends TestCase
         //test with scores
         $this->assertEquals(['lisi' => 72], $totalRanking->top(2, 1, true));
         $this->assertEquals(['zhangsan' => 80, 'lisi' => 72, 'wangwu' => 65], $totalRanking->top(1, 10, true));
+    }
+
+    public function testAddItem()
+    {
+        $totalRanking = new TotalRanking($this->client, new AllProviderExample(), 'test');
+        $totalRanking->addItem('wangwu', 30);
+        $this->assertEquals(['wangwu', 'zhangsan', 'lisi'], $totalRanking->top(1, 10));
     }
 
     public function testRankAlreadyExist()
@@ -89,10 +77,5 @@ class TotalRankingTest extends TestCase
         foreach($data as $item) {
             $this->client->zincrby('test:total_rank', $item['score'], $item['member']);
         }
-    }
-
-    public function setUp()
-    {
-        $this->client->flushall();
     }
 }
