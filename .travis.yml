@@ -6,4 +6,4 @@ php:
   
 before_script:
   - composer install
-  - sudo redis-server /etc/redis/redis.conf --port 6380 --requirepass 'ranking'
+  - sudo redis-server /etc/redis/redis.conf --port 6380 --requirepass ranking
