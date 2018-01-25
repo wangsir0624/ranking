@@ -35,7 +35,8 @@ $provider = new AllProvider();
 $client = new \Predis\Client([
     'scheme' => 'tcp',
     'host' => '127.0.0.1',
-    'port' => 6379
+    'port' => 6379,
+    'password' => 'root'
 ]);
 $totalRanking = new \Wangjian\Ranking\Ranking\TotalRanking($client, $provider, 'test:ranking');
-var_dump($totalRanking->rank('zBiIip1', true));
+var_dump($totalRanking->top(1, 6));

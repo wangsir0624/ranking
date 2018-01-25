@@ -10,7 +10,7 @@ class TotalRanking extends AbstractRanking
 
     protected function needRefresh()
     {
-        return $this->getInitTime() <= 0;
+        return $this->getInitTime() === false;
     }
 
     protected function isRealTime()
