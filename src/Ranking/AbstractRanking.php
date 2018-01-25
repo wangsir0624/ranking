@@ -3,9 +3,12 @@ namespace Wangjian\Ranking\Ranking;
 
 use Wangjian\Ranking\Provider\AbstractProvider;
 use Predis\Client;
+use Wangjian\Ranking\TimeUtil\TimeUtil;
 
 abstract class AbstractRanking
 {
+    use TimeUtil;
+
     /**
      * Predis client
      * @var Client
@@ -111,7 +114,7 @@ abstract class AbstractRanking
     protected function init()
     {
         if($this->needRefresh()) {
-            $rand = rand(1000000, 999999);
+            $rand = mt_rand(100000, 999999);
             $tmpInitKey = $this->getInitKey() . '_temp' . $rand;
             $tmpRankKey = $this->getRankKey() . '_temp' . $rand;
 
