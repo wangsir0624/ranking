@@ -14,5 +14,10 @@ abstract class PageProvider extends AbstractProvider
         }
     }
 
+    /**
+     * get data page by page
+     * @param $page
+     * @return array
+     */
     abstract public function getPage($page);
 }

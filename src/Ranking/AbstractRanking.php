@@ -111,17 +111,23 @@ abstract class AbstractRanking
     protected function init()
     {
         if($this->needRefresh()) {
-            $tmpInitKey = $this->getInitKey() . '_temp';
-            $tmpRankKey = $this->getRankKey() . '_temp';
+            $rand = rand(1000000, 999999);
+            $tmpInitKey = $this->getInitKey() . '_temp' . $rand;
+            $tmpRankKey = $this->getRankKey() . '_temp' . $rand;
 
             if($this->client->setnx($tmpInitKey, time())) {
                 foreach($this->provider->provide() as $item) {
                     $this->client->zincrby($tmpRankKey, $item['score'], $item['member']);
                 }
-            }
 
-            $this->client->rename($tmpInitKey, $this->getInitKey());
-            $this->client->rename($tmpRankKey, $this->getRankKey());
+                if($this->client->exists($tmpInitKey)) {
+                    $this->client->rename($tmpInitKey, $this->getInitKey());
+                }
+
+                if($this->client->exists($tmpRankKey)) {
+                    $this->client->rename($tmpRankKey, $this->getRankKey());
+                }
+            }
         }
     }
 

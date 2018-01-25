@@ -31,12 +31,32 @@ class AllProvider extends \Wangjian\Ranking\Provider\AllProvider
     }
 }
 
-$provider = new AllProvider();
+class PageProvider extends \Wangjian\Ranking\Provider\PageProvider
+{
+    public function getPage($page)
+    {
+        return [];
+    }
+}
+
+class GeneratorProvider extends \Wangjian\Ranking\Provider\GeneratorProvider
+{
+    public function generate()
+    {
+        if(false) {
+            yield [];
+        }
+    }
+}
+
+$provider1 = new AllProvider();
+$provider2 = new PageProvider();
+$provider3 = new GeneratorProvider();
 $client = new \Predis\Client([
     'scheme' => 'tcp',
     'host' => '127.0.0.1',
     'port' => 6379,
     'password' => 'root'
 ]);
-$totalRanking = new \Wangjian\Ranking\Ranking\TotalRanking($client, $provider, 'test:ranking');
+$totalRanking = new \Wangjian\Ranking\Ranking\TotalRanking($client, $provider1, 'test:ranking');
 var_dump($totalRanking->top(1, 6));

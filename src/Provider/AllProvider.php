@@ -9,5 +9,9 @@ abstract class AllProvider extends AbstractProvider
         }
     }
 
+    /**
+     * get all data
+     * @return array
+     */
     abstract public function getAll();
 }
