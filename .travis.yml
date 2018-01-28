@@ -3,7 +3,9 @@ php:
   - 5.6
   - 7
   - nightly
+
+services:
+  - redis-server
   
 before_script:
   - composer install
-  - sudo redis-server /etc/redis/redis.conf --port 6380 --requirepass ranking
