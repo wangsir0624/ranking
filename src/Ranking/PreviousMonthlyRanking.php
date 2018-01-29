@@ -14,9 +14,7 @@ class PreviousMonthlyRanking extends AbstractRanking
             return true;
         }
 
-        $previousMonthTimestamp = $this->getMinTimestampOfMonth() - 3600;
-
-        return $initTimestamp < $this->getMinTimestampOfMonth($previousMonthTimestamp) || $initTimestamp > $this->getMaxTimestampOfMonth($previousMonthTimestamp);
+        return $initTimestamp < $this->getMinTimestampOfMonth() || $initTimestamp > $this->getMaxTimestampOfMonth();
     }
 
     public function isRealTime()

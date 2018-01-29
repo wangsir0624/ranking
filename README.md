@@ -193,8 +193,10 @@ class HourlyRanking extends \Wangjian\Ranking\Ranking\AbstractRanking
     {
         //redis里面的排行榜是否过期
 
-        //获取排行榜实例化的时间
-        $initTime = $this->getInitTime();
+        //获取排行榜实例化的时间，如果不存在，说明排行榜还没有初始化过
+        if(($initTimestamp = $this->getInitTime()) === false) {
+            return true;
+        }
 
         return $initTime < strtotime(date('Y-m-d H:00:00')) || $initTime > strtotime(date('Y-m-d H:59:59'));
     }

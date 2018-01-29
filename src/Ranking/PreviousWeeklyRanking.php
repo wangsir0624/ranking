@@ -14,9 +14,7 @@ class PreviousWeeklyRanking extends AbstractRanking
             return true;
         }
 
-        $previousWeekTimestamp = $this->getMinTimestampOfWeek() - 3600;
-
-        return $initTimestamp < $this->getMinTimestampOfWeek($previousWeekTimestamp) || $initTimestamp > $this->getMaxTimestampOfWeek($previousWeekTimestamp);
+        return $initTimestamp < $this->getMinTimestampOfWeek() || $initTimestamp > $this->getMaxTimestampOfWeek();
     }
 
     public function isRealTime()

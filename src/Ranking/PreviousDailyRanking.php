@@ -14,9 +14,7 @@ class PreviousDailyRanking extends AbstractRanking
             return true;
         }
 
-        $previousDayTimestamp = $this->getMinTimestampOfDay() - 3600;
-
-        return $initTimestamp < $this->getMinTimestampOfDay($previousDayTimestamp) || $initTimestamp > $this->getMaxTimestampOfDay($previousDayTimestamp);
+        return $initTimestamp < $this->getMinTimestampOfDay() || $initTimestamp > $this->getMaxTimestampOfDay();
     }
 
     public function isRealTime()

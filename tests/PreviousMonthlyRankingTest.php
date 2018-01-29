@@ -55,7 +55,7 @@ class PreviousMonthlyRankingTest extends RankingTestBase
             ['score' => 90, 'member' => 'wangwu']
         ];
 
-        $this->client->set('test:previous_monthly_init', time() - 86400 * 62);
+        $this->client->set('test:previous_monthly_init', time() - 86400 * 31);
         foreach($data as $item) {
             $this->client->zincrby('test:previous_monthly_rank', $item['score'], $item['member']);
         }
@@ -69,7 +69,7 @@ class PreviousMonthlyRankingTest extends RankingTestBase
             ['score' => 90, 'member' => 'wangwu']
         ];
 
-        $this->client->set('test:previous_monthly_init', time());
+        $this->client->set('test:previous_monthly_init', time() + 86400 * 31);
         foreach($data as $item) {
             $this->client->zincrby('test:previous_monthly_rank', $item['score'], $item['member']);
         }

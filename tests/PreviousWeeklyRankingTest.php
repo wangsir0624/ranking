@@ -55,7 +55,7 @@ class PreviousWeeklyRankingTest extends RankingTestBase
             ['score' => 90, 'member' => 'wangwu']
         ];
 
-        $this->client->set('test:previous_weekly_init', time() - 86400 * 14);
+        $this->client->set('test:previous_weekly_init', time() - 86400 * 7);
         foreach($data as $item) {
             $this->client->zincrby('test:previous_weekly_rank', $item['score'], $item['member']);
         }
@@ -69,7 +69,7 @@ class PreviousWeeklyRankingTest extends RankingTestBase
             ['score' => 90, 'member' => 'wangwu']
         ];
 
-        $this->client->set('test:previous_weekly_init', time());
+        $this->client->set('test:previous_weekly_init', time() + 86400 * 7);
         foreach($data as $item) {
             $this->client->zincrby('test:previous_weekly_rank', $item['score'], $item['member']);
         }

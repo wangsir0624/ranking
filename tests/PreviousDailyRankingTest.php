@@ -55,7 +55,7 @@ class PreviousDailyRankingTest extends RankingTestBase
             ['score' => 90, 'member' => 'wangwu']
         ];
 
-        $this->client->set('test:previous_daily_init', time() - 86400 * 2);
+        $this->client->set('test:previous_daily_init', time() - 86400);
         foreach($data as $item) {
             $this->client->zincrby('test:previous_daily_rank', $item['score'], $item['member']);
         }
@@ -69,7 +69,7 @@ class PreviousDailyRankingTest extends RankingTestBase
             ['score' => 90, 'member' => 'wangwu']
         ];
 
-        $this->client->set('test:previous_daily_init', time());
+        $this->client->set('test:previous_daily_init', time() + 86400);
         foreach($data as $item) {
             $this->client->zincrby('test:previous_daily_rank', $item['score'], $item['member']);
         }
