@@ -3,7 +3,6 @@
   "description": "基于Redis Zset的排行榜工具",
   "license": "MIT",
   "keywords": ["rank", "ranking", "redis", "zset"],
-  "version": "1.0.0",
   "authors": [
     {
       "name": "Wangjian",
